@@ -8,7 +8,7 @@ public class App
 {
     public static void main( String[] args )
     {
-        String url = "https://mediamart.vn/tivi/sony/";
+        String url = "https://mediamart.vn/laptop/";
         WebCrawler crawler = new WebCrawler();
         crawler.crawl(url);
     }

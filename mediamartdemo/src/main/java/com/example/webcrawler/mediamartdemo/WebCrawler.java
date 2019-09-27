@@ -23,7 +23,7 @@ import org.jsoup.select.Elements;
 public class WebCrawler {
 	private static final char[] ILLEGAL_CHARACTERS = { '/', '\n', '\r', '\t', '\0', '\f', '`', '?', '*', '\\', '<', '>', '|', '\"', ':' };
 	
-	String baseFolder = "C:\\MediamartCrawler\\";
+	String baseFolder = "C:\\MediamartCrawler\\laptop\\";
 	public void crawl(String url)
 	{
 		try {
@@ -51,7 +51,7 @@ public class WebCrawler {
 			for(int page = 1; page <= pageCount; page++)
 			{
 				Document pageDoc = Jsoup.connect(templateUrl + page).get();
-				System.out.println("Crawling in page " + page);
+				System.out.println("Crawling in page " + page + " out of " + pageCount);
 				crawlPage(pageDoc);
 			}
 			
@@ -83,6 +83,8 @@ public class WebCrawler {
 				Document doc = Jsoup.connect(url).get();
 //				System.out.println(doc.title());
 //				System.out.println(doc.toString());
+				if(doc.getElementsByClass("pdtr-name").size() < 1)
+					continue;
 				Element nameDiv = doc.getElementsByClass("pdtr-name").get(0);
 				String name = nameDiv.getElementsByTag("span").get(0).html();
 				name = validateFilename(name);
@@ -157,6 +159,10 @@ public class WebCrawler {
 
 			// write to jpeg file
 			ImageIO.write(newBufferedImage, "jpg", new File(filepath.replace(getFileExtension(filepath), "jpg")));
+			
+			//delete old file
+			File file = new File(filepath);
+			file.delete();
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
